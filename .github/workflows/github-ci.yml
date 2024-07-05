@@ -7,7 +7,7 @@ on:
       
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout repository
@@ -18,10 +18,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
           
+      - name: Restore dependencies
+        run: dotnet restore
+        
       - name: Build project
         run: dotnet build --configuration Release --no-restore
         
-        - name: Archive build output
+      - name: Archive build output
         uses: actions/upload-artifact@v2
         with:
           name: build-output
@@ -29,11 +32,11 @@ jobs:
           
   test:
     needs: build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     steps:
       - name: Checkout repository
-        uses: action/checkout@v2
+        uses: actions/checkout@v2
        
       - name: build output
         uses: actions/download-artifact@v2
