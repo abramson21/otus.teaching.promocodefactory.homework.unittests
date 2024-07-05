@@ -1,49 +1,48 @@
-name: pipline
+name: CI CD pipeline
 
 on:
   push:
     branches:
       - master
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      
-      - name: .Net Core
+
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.0.x'
-          
+
       - name: Restore dependencies
         run: dotnet restore
-        
-      - name: Build project
+
+      - name: Build the project
         run: dotnet build --configuration Release --no-restore
-        
+
       - name: Archive build output
         uses: actions/upload-artifact@v2
         with:
           name: build-output
           path: ./out
-          
+
   test:
     needs: build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-       
-      - name: build output
+
+      - name: Download build output
         uses: actions/download-artifact@v2
         with:
           name: build-output
           path: ./out
-          
-      - name: Tests
+
+      - name: Test with the dotnet CLI
         run: dotnet test
-      
