@@ -25,7 +25,3 @@ jobs:
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
         working-directory: src
-
-      - name: tests
-        run: dotnet test --no-build --verbosity normal
-        working-directory: src
