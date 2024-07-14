@@ -1,4 +1,4 @@
-name: CI CD pipeline
+name: CI CD pipeline unit tests
 
 on:
   push:
@@ -20,12 +20,12 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: src
 
       - name: Build the project
         run: dotnet build --configuration Release --no-restore
+        working-directory: src
 
-      - name: Archive build output
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-output
-          path: ./out
+      - name: tests
+        run: dotnet test --no-build --verbosity normal
+        working-directory: src
